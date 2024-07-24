@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import LeaderboardManager from '../leaderboard/leaderboardManager.js';
-import { createHash } from 'crypto';
 import CryptoUtils from '../utils/crypto.js';
 import { Logger } from '../utils/logger.js';
+import { LeaderboardEntry } from '../database/entities/leaderboardEntry.entity.js';
 
 const indexRouter = Router();
 const logger = new Logger('Webserver');
@@ -18,11 +18,11 @@ indexRouter.post('/leaderboard', async (req, res) => {
         return res.status(400).json({ error: 'Missing username or score' });
     }
 
-    await LeaderboardManager.addEntry({
-        username: req.body.username,
-        score: req.body.score,
-        hashedIp: CryptoUtils.hashString((req.headers['x-forwarded-for'] as string) || (req.headers['x-real-ip'] as string) || req.ip || 'unknown')
-    });
+    await LeaderboardManager.addEntry(new LeaderboardEntry(
+        req.body.username,
+        req.body.score,
+        CryptoUtils.hashString((req.headers['x-forwarded-for'] as string) || (req.headers['x-real-ip'] as string) || req.ip || 'unknown')
+    ));
 
     logger.info('POST /leaderboard', `Added entry for ${req.body.username}`);
     res.json({ success: true });
