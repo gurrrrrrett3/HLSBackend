@@ -18,6 +18,8 @@ indexRouter.post('/leaderboard', async (req, res) => {
         return res.status(400).json({ error: 'Missing username or score' });
     }
 
+    logger.info('POST /leaderboard', `Adding entry for ${req.body.username}`);
+
     await LeaderboardManager.addEntry(new LeaderboardEntry(
         req.body.username,
         req.body.score,
