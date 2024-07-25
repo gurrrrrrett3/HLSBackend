@@ -13,6 +13,7 @@ indexRouter.get('/leaderboard', (req, res) => {
 });
 
 indexRouter.post('/leaderboard', async (req, res) => {
+
     if (!req.body.username || !req.body.score) {
         logger.error('POST /leaderboard', 'Missing username or score');
         return res.status(400).json({ error: 'Missing username or score' });
