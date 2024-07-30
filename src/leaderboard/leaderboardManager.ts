@@ -16,7 +16,7 @@ export default class LeaderboardManager {
         const leaderboardRepo = db.em.getRepository(LeaderboardEntry)
         const currentEntry = await leaderboardRepo.findOne({ username: entry.username })
 
-        if (currentEntry) {
+        if (currentEntry && currentEntry.score < entry.score) {
             currentEntry.score = entry.score
             await db.em.persistAndFlush(currentEntry)
         } else {
