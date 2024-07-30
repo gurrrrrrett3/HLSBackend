@@ -7,8 +7,22 @@ export default class LeaderboardManager {
 
     public static getLeaderboard(): Record<string, number> {
         const ret: Record<string, number> = {}
-        for (let i = 0; i < this.cache.length; i++) {
-            ret[this.cache[i].username] = this.cache[i].score
+
+        if (process.env.SHOW_DUMMY_DATA) {
+            const users = Array.from({ length: 100 }, (_, i) => {
+                return {
+                    username: `user${i}`,
+                    score: Math.floor(Math.random() * 1000)
+                }
+            }).sort((a, b) => b.score - a.score)
+
+            for (let i = 0; i < users.length; i++) {
+                ret[users[i].username] = users[i].score
+            }
+        } else {
+            for (let i = 0; i < this.cache.length; i++) {
+                ret[this.cache[i].username] = this.cache[i].score
+            }
         }
 
         return ret
