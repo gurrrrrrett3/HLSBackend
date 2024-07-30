@@ -5,8 +5,13 @@ export default class LeaderboardManager {
 
     private static cache: Omit<LeaderboardEntry, 'hashedIp'>[] = []
 
-    public static getLeaderboard(): Omit<LeaderboardEntry, 'hashedIp'>[] {
-        return this.cache
+    public static getLeaderboard(): Record<string, number> {
+        const ret: Record<string, number> = {}
+        for (let i = 0; i < this.cache.length; i++) {
+            ret[this.cache[i].username] = this.cache[i].score
+        }
+
+        return ret
     }
 
     public static async addEntry(entry: LeaderboardEntry): Promise<void> {
