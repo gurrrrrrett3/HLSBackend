@@ -12,7 +12,7 @@ export default class LeaderboardManager {
             const users = Array.from({ length: 100 }, (_, i) => {
                 return {
                     username: `user${i}`,
-                    score: Math.floor(Math.random() * 1000)
+                    score: i
                 }
             }).sort((a, b) => b.score - a.score)
 
